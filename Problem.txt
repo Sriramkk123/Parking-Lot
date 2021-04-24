@@ -1,0 +1,1 @@
+A owner is interested in being notified whenever a vehicle exits the parking lot. This is because the attendant may allow vehicles to exit by taking cash and not entering it in the system.
