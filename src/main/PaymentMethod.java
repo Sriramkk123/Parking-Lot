@@ -1,5 +1,7 @@
 package main;
 
+import java.text.ParseException;
+
 import categories.PaymentType;
 
 public abstract class PaymentMethod {
@@ -7,7 +9,7 @@ public abstract class PaymentMethod {
 	private Vehicle vehicle;
 	private PaymentType type;
 	
-	public abstract Long calculateFee(Ticket ticket);
+	public abstract Long calculateFee(Vehicle vehicle);
 	
 	public PaymentMethod(PaymentType pType) {
 		this.type = pType;

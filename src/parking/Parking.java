@@ -110,7 +110,7 @@ public class Parking {
 	//This should be a Singleton class as it should contain only one object at any time
 	private static Parking parking = null;
 
-	private Parking() {
+	public Parking() {
 		
 	}
 	
@@ -165,14 +165,14 @@ public class Parking {
 		if(pType == PaymentType.CASH)
 		{
 			Cash cash = new Cash();
-			Long fee = cash.calculateFee(vehicle.getTicket());
+			Long fee = cash.calculateFee(vehicle);
 			cash.sendNotification();
 			return fee;
 		}
 		if(pType == PaymentType.CARD)
 		{
 			Card card = new Card();
-			Long fee = card.calculateFee(vehicle.getTicket());
+			Long fee = card.calculateFee(vehicle);
 			return fee;
 		}
 		return null;
