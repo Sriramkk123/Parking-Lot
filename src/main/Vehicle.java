@@ -3,7 +3,7 @@ package main;
 import categories.VehicleType;
 
 public abstract class Vehicle {
-	private String name;
+	private String registrationNumber;
 	private VehicleType type;
 	private Ticket ticket;
 	
@@ -13,13 +13,13 @@ public abstract class Vehicle {
 	}
 
 
-	public String getName() {
-		return name;
+	public String getRegistrationNumber() {
+		return registrationNumber;
 	}
 
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRegistrationNumber(String registrationNumbe) {
+		this.registrationNumber = registrationNumbe;
 	}
 
 
@@ -45,7 +45,7 @@ public abstract class Vehicle {
 
 	@Override
 	public String toString() {
-		return "Vehicle [name=" + name + ", type=" + type + ", ticket=" + ticket + "]";
+		return "Vehicle [name=" + registrationNumber + ", type=" + type + ", ticket=" + ticket + "]";
 	}
 
 
@@ -53,7 +53,7 @@ public abstract class Vehicle {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((registrationNumber == null) ? 0 : registrationNumber.hashCode());
 		result = prime * result + ((ticket == null) ? 0 : ticket.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -69,10 +69,10 @@ public abstract class Vehicle {
 		if (getClass() != obj.getClass())
 			return false;
 		Vehicle other = (Vehicle) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (registrationNumber == null) {
+			if (other.registrationNumber != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!registrationNumber.equals(other.registrationNumber))
 			return false;
 		if (ticket == null) {
 			if (other.ticket != null)
