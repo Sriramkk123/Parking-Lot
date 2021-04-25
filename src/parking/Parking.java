@@ -1,7 +1,12 @@
 package parking;
 
+import categories.PaymentType;
 import categories.VehicleType;
 import main.Address;
+import main.PaymentMethod;
+import main.Vehicle;
+import paymenttypes.Card;
+import paymenttypes.Cash;
 
 public class Parking {
 	
@@ -131,18 +136,46 @@ public class Parking {
 	}
 	
 	//Add a vehicle
-	public void addSpotCount(VehicleType type) {
-		if(type == VehicleType.CAR) {
+	public void addSpotCount(Vehicle vehicle) {
+		if(vehicle.getType() == VehicleType.CAR) {
 			mediumCount++;
 		}
-		if(type == VehicleType.BIKE) {
+		if(vehicle.getType() == VehicleType.BIKE) {
 			compactCount++;
 		}
-		if(type == VehicleType.TRUCK) {
+		if(vehicle.getType() == VehicleType.TRUCK) {
 			largeCount++;
 		}
 	}
 	
-	
+	//exit from spot
+	public Long removeSpotCount(Vehicle vehicle, PaymentType pType) {
+		if(vehicle.getType() == VehicleType.CAR) {
+			mediumCount--;
+		}
+		if(vehicle.getType()== VehicleType.BIKE) {
+			compactCount--;
+		}
+		if(vehicle.getType() == VehicleType.TRUCK) {
+			largeCount--;
+		}
+		
+		
+		
+		if(pType == PaymentType.CASH)
+		{
+			Cash cash = new Cash();
+			Long fee = cash.calculateFee(vehicle.getTicket());
+			cash.sendNotification();
+			return fee;
+		}
+		if(pType == PaymentType.CARD)
+		{
+			Card card = new Card();
+			Long fee = card.calculateFee(vehicle.getTicket());
+			return fee;
+		}
+		return null;
+	}
 	
 }

@@ -19,9 +19,8 @@ public class Ticket {
 	public Date getTimeIssued() {
 		return timeIssued;
 	}
-	public void setTimeIssued() {
-		Date date = new Date();
-		this.timeIssued = date;
+	public void setTimeIssued(Date timeIssued) {
+		this.timeIssued = timeIssued;
 	}
 
 	@Override

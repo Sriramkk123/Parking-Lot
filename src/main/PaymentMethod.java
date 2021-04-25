@@ -7,10 +7,10 @@ public abstract class PaymentMethod {
 	private Vehicle vehicle;
 	private PaymentType type;
 	
-	public abstract Long calculateFee();
+	public abstract Long calculateFee(Ticket ticket);
 	
-	public PaymentMethod(PaymentType type) {
-		this.type = type;
+	public PaymentMethod(PaymentType pType) {
+		this.type = pType;
 	}
 	
 	public String getId() {
