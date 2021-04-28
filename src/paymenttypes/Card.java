@@ -1,12 +1,10 @@
 package paymenttypes;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import categories.PaymentType;
 import main.PaymentMethod;
-import main.Ticket;
 import main.Vehicle;
 
 public class Card extends PaymentMethod{
@@ -17,34 +15,28 @@ public class Card extends PaymentMethod{
 
 	@Override
 	public Long calculateFee(Vehicle vehicle) {
-		SimpleDateFormat format = new SimpleDateFormat();
-		Date entryTime = null;
-		Date exitTime = null;
-		try {
-			entryTime = format.parse(vehicle.getTicket().getTimeIssued().toString());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		try {
-			exitTime = format.parse(new Date().toString());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		vehicle.getTicket().setTimeExited(LocalDateTime.now());
+		LocalDateTime entryTime = null;
+		LocalDateTime exitTime = null;
+		entryTime = vehicle.getTicket().getTimeIssued();
+		exitTime = vehicle.getTicket().getTimeExited();
 		if(entryTime != null && exitTime != null){
 			Long paymentAmount = 0L;
-			Long difference = (long) (exitTime.getHours() - entryTime.getHours());
+			Duration duration = Duration.between(entryTime, exitTime);
+			Long difference = duration.toHours();
 			if(difference == 0)
 			{
-				paymentAmount += vehicle.getFirstHourCharges();
+				paymentAmount += vehicle.getParkingFee().getFirstHourCharges();
 				return paymentAmount;
 			}
 			else if(difference == 1)
 			{
-				paymentAmount += vehicle.getFirstHourCharges() + vehicle.getSecondHourCharges();
+				paymentAmount += vehicle.getParkingFee().getFirstHourCharges() + vehicle.getParkingFee().getSecondHourCharges();
+				return paymentAmount;
 			}
 			else if(difference > 1)
 			{
-				paymentAmount += vehicle.getFirstHourCharges() + vehicle.getSecondHourCharges() + (difference - 2)*vehicle.getLaterCharges();
+				paymentAmount += vehicle.getParkingFee().getFirstHourCharges() + vehicle.getParkingFee().getSecondHourCharges() + (difference - 1)*vehicle.getParkingFee().getLaterCharges();
 				return paymentAmount;
 			}
 		}

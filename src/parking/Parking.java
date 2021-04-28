@@ -1,17 +1,20 @@
 package parking;
 
+
+import java.time.LocalDateTime;
+
 import categories.PaymentType;
 import categories.VehicleType;
+import factory.PaymentFactory;
 import main.Address;
 import main.PaymentMethod;
+import main.Ticket;
 import main.Vehicle;
-import paymenttypes.Card;
 import paymenttypes.Cash;
 
 public class Parking {
 	
 	//Details of Parking Lot
-	private String id;
 	private String name;
 	private Address address;
 	
@@ -25,15 +28,8 @@ public class Parking {
 	private int maxMediumCount;
 	private int maxLargeCount;
 	
-	
+	static int ticketId = 1;
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -110,9 +106,11 @@ public class Parking {
 	//This should be a Singleton class as it should contain only one object at any time
 	private static Parking parking = null;
 
+	
 	public Parking() {
 		
 	}
+
 	
 	public static Parking getInstance() {
 		if(parking == null) {
@@ -121,8 +119,21 @@ public class Parking {
 		return parking;
 	}
 	
+	public void addAddress(Address address) {
+		this.setAddress(address);
+	}
+	
+	//add max Parking count
+	public void addParking(int maxCompactCount, int maxMediumCount,int maxLargeCount)
+	{
+		this.setMaxCompactCount(maxCompactCount);
+		this.setMaxMediumCount(maxMediumCount);
+		this.setMaxLargeCount(maxLargeCount);
+	}
+	
+	
 	//Check if parking if Full
-	public boolean isFull(VehicleType type) {
+	public synchronized boolean isFull(VehicleType type) {
 		if(type == VehicleType.CAR) {
 			return mediumCount >= maxMediumCount;
 		}
@@ -136,7 +147,7 @@ public class Parking {
 	}
 	
 	//Add a vehicle
-	public void addSpotCount(Vehicle vehicle) {
+	public synchronized void addSpotCount(Vehicle vehicle) {
 		if(vehicle.getType() == VehicleType.CAR) {
 			mediumCount++;
 		}
@@ -146,10 +157,15 @@ public class Parking {
 		if(vehicle.getType() == VehicleType.TRUCK) {
 			largeCount++;
 		}
+		
+		Ticket ticket = new Ticket();
+		ticket.setId(ticketId++);
+		ticket.setTimeIssued(LocalDateTime.now());
+		vehicle.setTicket(ticket);
 	}
 	
 	//exit from spot
-	public Long removeSpotCount(Vehicle vehicle, PaymentType pType) {
+	public synchronized Long removeSpotCount(Vehicle vehicle, PaymentType pType) {
 		if(vehicle.getType() == VehicleType.CAR) {
 			mediumCount--;
 		}
@@ -160,22 +176,12 @@ public class Parking {
 			largeCount--;
 		}
 		
-		
-		
-		if(pType == PaymentType.CASH)
-		{
-			Cash cash = new Cash();
-			Long fee = cash.calculateFee(vehicle);
-			cash.sendNotification();
-			return fee;
-		}
-		if(pType == PaymentType.CARD)
-		{
-			Card card = new Card();
-			Long fee = card.calculateFee(vehicle);
-			return fee;
-		}
-		return null;
+		PaymentFactory paymentFactory = new PaymentFactory();
+		PaymentMethod paymentMethod = paymentFactory.getPaymentMethod(pType);
+		Long fee = paymentMethod.calculateFee(vehicle);
+		if(paymentMethod instanceof Cash)
+			((Cash) paymentMethod).sendNotification();
+		return fee;
 	}
 	
 }

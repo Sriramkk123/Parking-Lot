@@ -1,7 +1,9 @@
 1. Parking Lot should contain multiple floors for parking facility.
-2. Parking lot should contain multiple categories of parking facility Compact, Large, Medium, Electric_Compact, Electric_Medium
-3. Parking lot should contain parking facility for different vehicles such as Car, Bike, Cycle, Truck, Electric car, Electric bike
+2. Parking lot should contain multiple categories of parking facility Compact, Large, Medium
+3. Parking lot should contain parking facility for different vehicles such as Car, Bike, Truck
 4. Parking lot should contain multiple entry and exit points for different category of vehicles.
 5. The charges should be 30 Rs for 1st hour, 20 Rs for 2nd hour and 10Rs per hour for next hours.(Random assumption)
 6. There should be an attendant to forsee and look into procedure if there arises any issue. 
 7. A display facility at each floor to show empty places for parking and if is full, display the same for different category of vehicles.
+
+**Multiple floors and display not implemented**
